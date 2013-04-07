@@ -1,8 +1,7 @@
 var utils = require('./utils');
 var origin = location.origin;
-
-// regex to check whether a link is absolute
-var ABSOLUTE_LINK_REGEX = /^(http|https):\/\//;
+var url = location.href;
+var relativeURL = url.replace(origin, '');
 
 /* Returns whether the given link is prefetchable. Being prefetchable entails
  * that the link is on the same origin as the current location.
@@ -17,13 +16,12 @@ function isPrefetchable(link) {
     // not a valid link to prefetch
     return false;
   }
-
-  if (ABSOLUTE_LINK_REGEX.test(link) && link.indexOf(ORIGIN) !== 0) {
+  
+  if (utils.isAbsoluteLink(link) && link.indexOf(origin) !== 0) {
     // absolute link that is not on this origin
     return false;
   }
 
-  var relativeURL = location.href.replace(ORIGIN, '');
   if (link == relativeURL) {
     // link goes to this same page
     return false;
@@ -32,7 +30,8 @@ function isPrefetchable(link) {
   return true;
 }
 
-/* Returns all prefetchable links on the current page. */
+/* Returns all prefetchable links on the current page. Makes these links
+ * absolute. */
 exports.findPrefetchableLinks = function() {
   var anchors = document.getElementsByTagName('a');
   var prefetchableLinks = [];
@@ -40,7 +39,7 @@ exports.findPrefetchableLinks = function() {
   // loop through all links on the page, aggregating those that can be prefetched
   anchors.forEach(function(anchor) {
     if (isPrefetchable(anchor.href)) {
-      prefetchableLinks.push(anchor.href);
+      prefetchableLinks.push(utils.makeLinkAbsolute(anchor.href));
     }
   });
 
