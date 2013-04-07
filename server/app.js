@@ -2,7 +2,7 @@ var io = require('socket.io').listen(1875);
 var request = require('request');
 
 // regular expression used to match an HTTP(S) URL
-var URL_REGEX = /^(https?:\/\/)?([\da-z\.\-]+)\.([a-z\.]{2,6})([\/\w \.\-]*)*\/?$/;
+var URL_REGEX = /(http|ftp|https):\/\/[\w\-_]+(\.?[\w\-_]+)+([\w\-\.,@?\^=%&amp;:\/~\+#]*[\w\-\@?\^=%&amp;\/~\+#])?/;
 
 io.sockets.on('connection', function(socket) {
   /* Client emits a request event when it wants to request the given URL. This
@@ -12,13 +12,10 @@ io.sockets.on('connection', function(socket) {
    * url -- the URL to return the GET response for
    */
   socket.on('request', function(url) {
-    console.log('in req', url);
-    // TODO: re-enable when not testing
     // ensure URL is in the appropriate form
-    // if (!URL_REGEX.test(url)) {
-    //   return;
-    // }
-    console.log('in req past regex', url);
+    if (!URL_REGEX.test(url)) {
+      return;
+    }
 
     request(url, function(error, response, body) {
       if (!error && response.statusCode == 200) {

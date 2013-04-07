@@ -101,17 +101,25 @@ exports.toArray = function(arrayLike) {
 exports.parseHTMLFromString = function(str) {
   // create a blank HTML document
   var doc = document.implementation.createHTMLDocument("");
-  var docElement = doc.documentElement;
-  var firstElement;
+  exports.setDocumentHTML(doc, str);
+  return doc; 
+};
 
+/* Sets the given doument's innerHTML to the provided string. Removes
+ * superfluous HTML tags if entire document needs to be replaced.
+ *
+ * Arguments:
+ * doc -- document to set HTML of
+ * str -- string to set innerHTML to
+ */
+exports.setDocumentHTML = function(doc, str) {
+  var docElement = doc.documentElement;
   docElement.innerHTML = str;
-  firstElement = docElement.firstElementChild;
+  var firstElement = docElement.firstElementChild;
 
   // replace nested HTML tag if necessary
   if (docElement.childElementCount === 1 &&
       firstElement.localName.toLowerCase() === "html") {  
     doc.replaceChild(firstElement, docElement);  
-  }  
-
-  return doc; 
+  }
 };

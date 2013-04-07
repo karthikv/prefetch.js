@@ -7,9 +7,9 @@ var resourceFs = require('./resource-fs.js');
  * arguments, in that order.
  *
  * Arguments:
- *  body - the html area to rewrite 
- *  url - the actual URL
- *  fsurl - the cached filesystem URL  
+ * body - the html area to rewrite 
+ * url - the actual URL
+ * fsurl - the cached filesystem URL  
  */
 exports.rewrite = function(bodyDoc, url, fsurl) {
   // Are these all the resource tags?
