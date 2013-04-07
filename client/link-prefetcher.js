@@ -8,7 +8,7 @@ var socket = io.connect('http://localhost:1875');
  * links -- An array of links to prefetch. All links should be absolute and on
  *  the same origin as the current location.
  */
-exports.prefetchLinks = function(links, callback) {
+exports.prefetch = function(links, callback) {
   socket.on('response', function(response) {
     if (!response.url || !response.body)
       return;
