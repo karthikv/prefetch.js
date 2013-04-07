@@ -1,6 +1,5 @@
 var utils = require('./utils'); 
 var uri = require('./uri');
-var filer = require('./filer.min.js').filer;
 var resourceFs = require('./resource-fs.js');
 
 /* Rewrite the given resource url in the provided resource body document with
