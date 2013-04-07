@@ -1,6 +1,6 @@
 var utils = require('./utils');
 
-function findPrefetchableResources() {
+exports.findPrefetchableResources = function() {
   var types = ['img', 'script', 'link'];
 
   types.forEach(function(type) {
@@ -23,6 +23,4 @@ function findPrefetchableResources() {
 
     return prefetchableLinks;
   });
-}
-
-exports.findPrefetchableResources = findPrefetchableResources;
+};

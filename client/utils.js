@@ -23,6 +23,11 @@ exports.isAbsoluteLink = function(link) {
   return ABSOLUTE_LINK_REGEX.test(link);
 };
 
+/* Returns the relative form of the provided absolute link
+ * 
+ * Arguments:
+ * absLink - the input absolute link 
+ */
 exports.toRelativeLink = function(absLink) {
   return absLink.replace(RELATIVE_LINK_REGEX, "");
 };
@@ -48,6 +53,13 @@ exports.makeLinkAbsolute = function(link) {
 
   return link;
 };
+
+/*  Returns true if the given link has the appropriate format 
+ *  for prefetching.
+ *
+ * Arguments:
+ * link -- the link to make absolute
+ */
 
 exports.isPrefetchable = function(link) {
   var origin = location.origin;
