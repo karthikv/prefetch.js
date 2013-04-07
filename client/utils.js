@@ -1,6 +1,5 @@
 // regex to check whether a link is absolute
 var ABSOLUTE_LINK_REGEX = /^(http|https):\/\//;
-var RELATIVE_LINK_REGEX = /^(?:\/\/|[^\/]+)*\//;
 
 var url = location.href;
 var origin = location.origin;
@@ -24,15 +23,6 @@ exports.trimString = function(str) {
  */
 exports.isAbsoluteLink = function(link) {
   return ABSOLUTE_LINK_REGEX.test(link);
-};
-
-/* Returns the relative form of the provided absolute link
- * 
- * Arguments:
- * absLink - the input absolute link 
- */
-exports.toRelativeLink = function(absLink) {
-  return absLink.replace(RELATIVE_LINK_REGEX, "");
 };
 
 /* Make the given link absolute if it is relative. If it is already absolute,
@@ -114,34 +104,49 @@ exports.parseHTMLFromString = function(str) {
  */
 exports.setDocumentHTML = function(doc, str) {
   var docElement = doc.documentElement;
-  docElement.innerHTML = '';
   docElement.innerHTML = str;
   var firstElement = docElement.firstElementChild;
 
   // replace nested HTML tag if necessary
   if (docElement.childElementCount === 1 &&
       firstElement.localName.toLowerCase() === "html") {  
-
-    var oldScriptElements = [];
-    var scriptElements = docElement.getElementsByTagName('script'); 
-    for (var index = 0; index < scriptElements.length; index ++) {
-      // removes the child from the DOM
-      var oldNode = scriptElements[index].parentNode.removeChild(scriptElements[index]);
-    
-      // adds the removed node to an array
-      oldScriptElements.push(oldNode);
-    }
-
     doc.replaceChild(firstElement, docElement);
-
-    // This should re-initialize the Javascript
-    for (var index = 0; index < oldScriptElements.length; index ++) {
-      // choose either the head or body of the document 
-      // as to prevent DOM Exception 3. 
-      // TODO: what if it doesn't exist?
-
-      var appendContainer = (doc.head  || doc.body);
-      doc.firstChild.appendChild(oldScriptElements[index]); 
-    }
   }
+
+  // reinsert script tags one-by-one so JavaScript kicks in
+  var oldScripts = [];
+  var scripts = exports.toArray(doc.getElementsByTagName('script'));
+  var index;
+
+  console.log('scripts are', scripts);
+
+  scripts.forEach(function(script) {
+    // remove the child from the DOM
+    var parentNode = script.parentNode;
+    var oldNode = script;
+    var newNode = document.createElement('script');
+
+    console.log('before src', oldNode, oldNode.getAttribute('src'), oldNode.src);
+    // need new script element for JavaScript to kick in
+    if (oldNode.src) {
+      console.log('setting src', oldNode.src);
+      newNode.src = oldNode.src;
+    } else {
+      newNode.innerHTML = oldNode.innerHTML;
+    }
+    
+    // note: removing child causes problems with setting script src attribute
+    // parentNode.removeChild(script);
+
+    // // add the removed node to an array
+    oldScripts.push({
+      parentNode: parentNode,
+      node: newNode
+    });
+  });
+
+  // re-initialize the Javascript
+  oldScripts.forEach(function(oldScript) {
+    oldScript.parentNode.appendChild(oldScript.node);
+  });
 };

@@ -8,7 +8,7 @@
 
   // set up filesystem
   var filer = new Filer();
-  filer.init({ persistent: true, size: 24 * 1024 * 1024 }); // TODO: need callback for this and is 24MB enough?
+  filer.init({ size: 50 * 1024 * 1024 });
 
   // mapping from link to response body 
   var linkToResponseBody = {};
@@ -44,14 +44,11 @@
         var docBody = linkToResponseBody[target.href];
         utils.setDocumentHTML(document, docBody.documentElement.innerHTML);
         
-        // History API - potential issue with cross domains (not possible due to security issues)
-        // TODO: is there anything wrong with just putting origin?
-        if (document.location.origin === target.origin && 
-            document.location.port === target.port &&
-            document.location.protocol === target.protocol) {
-          window.history.pushState({}, "", utils.toRelativeLink(target.href));
-        }
+        // TODO: check if we need to assert link relativity?
+        // if (document.location.origin === target.origin) {
 
+        // use history API to change relative URL
+        window.history.pushState({}, "", target.pathname);
         event.preventDefault();
       }
     }

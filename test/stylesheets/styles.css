@@ -13,10 +13,10 @@ p{margin-top:0;margin-bottom:20px}
 blockquote{font-size:17px;border-left:2px solid #ccc;padding-left:20px;margin-left:20px;font-style:italic;overflow:hidden}
 blockquote p:last-child{margin-bottom:0}
 cite{float:right;color:#999}
-header{background:#de7929 url("/images/pencil.jpg") center no-repeat;height:300px;margin-bottom:10px;border-bottom:1px solid #b76521}
+header{background:#de7929 url("http://localhost:3000/images/pencil.jpg") center no-repeat;height:300px;margin-bottom:10px;border-bottom:1px solid #b76521}
 header h1 a,header p{text-indent:-9999px}
 header h1 a{display:block;width:500px;height:210px}
-#logo{background:url("/images/karthikv-header.png") center no-repeat;height:300px;width:500px;margin:0 auto}
+#logo{background:url("http://localhost:3000/images/karthikv-header.png") center no-repeat;height:300px;width:500px;margin:0 auto}
 #wrapper{width:550px;margin:0 auto}
 #sidebar{text-align:center}
 nav{margin-top:30px}
@@ -35,7 +35,7 @@ section img{border:1px solid #ccc;padding:1px;background-color:#fff;max-width:10
 .visual-item.last{padding-right:0;padding-left:2%;*padding-left:0}
 .visual-item img{display:block;margin-bottom:10px}
 .visual-item span{display:block;font-size:16px;margin-top:10px;margin-bottom:15px;font-style:italic}
-.article{background:url("/images/separator.png") center bottom no-repeat;padding-bottom:80px;margin-bottom:40px}
+.article{background:url("http://localhost:3000/images/separator.png") center bottom no-repeat;padding-bottom:80px;margin-bottom:40px}
 .title a{color:#333;text-decoration:none}
 .meta{color:#999;text-transform:uppercase;font-size:14px;margin-bottom:0}
 .meta span{padding:0 3px}
