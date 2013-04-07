@@ -1,5 +1,6 @@
 // regex to check whether a link is absolute
 var ABSOLUTE_LINK_REGEX = /^(http|https):\/\//;
+var RELATIVE_LINK_REGEX = /^(?:\/\/|[^\/]+)*\//;
 
 /* Removes superfluous whitespace at the beginning and end of the given string.
  * Returns a new, trimmed string.
@@ -20,6 +21,10 @@ exports.trimString = function(str) {
  */
 exports.isAbsoluteLink = function(link) {
   return ABSOLUTE_LINK_REGEX.test(link);
+};
+
+exports.toRelativeLink = function(absLink) {
+  return absLink.replace(/^(?:\/\/|[^\/]+)*\//, "");
 };
 
 /* Make the given link absolute if it is relative. If it is already absolute,
