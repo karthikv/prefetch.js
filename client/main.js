@@ -9,17 +9,26 @@
 
   // mapping from link to response body 
   var linkToResponseBody = {};
+  var links = linkScraper.findPrefetchableLinks();
+
+  // absolute link to original link mapping
+  var absoluteToOriginalLink = {};
+  var absoluteLinks = links.map(function(link) {
+    absoluteToOriginalLink[link.absolute] = link.original;
+    return link.absolute;
+  });
 
   // prefetch all links on the page
-  var links = linkScraper.findPrefetchableLinks();
-  linkPrefetcher.prefetch(links, function(url, body) {
+  linkPrefetcher.prefetch(absoluteLinks, function(link, body) {
     // prefetch all resources corresponding to those links
     var resources = resourceScraper.findPrefetchableResources(body);
+    var originalLink = absoluteToOriginalLink[link];
 
     resourcePrefetcher.prefetch(resources, function(fsURL) {
       // rewrite URLs dynamically
-      body = resourcePrefetcher.rewrite(body, url, fsURL);
-      linkToResponseBody[url] = body;
+      // TODO: rewrite absolute link in rewrite()
+      body = resourcePrefetcher.rewrite(body, originalLink, fsURL);
+      linkToResponseBody[originalLink] = body;
     });
   });
 
