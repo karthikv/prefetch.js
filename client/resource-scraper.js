@@ -1,11 +1,21 @@
 var utils = require('./utils');
 
-exports.findPrefetchableResources = function() {
+/* Returns an array of all prefetchable resources on the current page. The array
+ * contains objects which have two properties: original and absolute. original
+ * contains the original, unmodified link. absolute contains the converted
+ * absolute link. */
+
+exports.findPrefetchableResources = function(body) {
   var types = ['img', 'script', 'link'];
 
   types.forEach(function(type) {
     var prefetchableLinks = [];
-    var tags = document.getElementsByTagName(type);
+
+    var parser = new DOMParser()
+      , wrapBody = parser.parseFromString(body, "text/xml");
+      , htmlBody = wrapBody.firstChild;
+
+    var tags = htmlBody.getElementsByTagName(type);
     var foundLinks = {};
 
     // loop through all resources on the page, 
