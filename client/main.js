@@ -8,7 +8,7 @@
 
   // set up filesystem
   var filer = new Filer();
-  filer.init(); // TODO: need callback for this?
+  filer.init({ persistent: true, size: 24 * 1024 * 1024 }); // TODO: need callback for this and is 24MB enough?
 
   // mapping from link to response body 
   var linkToResponseBody = {};
@@ -45,7 +45,12 @@
         utils.setDocumentHTML(document, docBody.documentElement.innerHTML);
         
         // History API - potential issue with cross domains (not possible due to security issues)
-        window.history.pushState({}, "", utils.toRelativeLink(target.href));
+        // TODO: is there anything wrong with just putting origin?
+        if (document.location.origin === target.origin && 
+            document.location.port === target.port &&
+            document.location.protocol === target.protocol) {
+          window.history.pushState({}, "", utils.toRelativeLink(target.href));
+        }
 
         event.preventDefault();
       }

@@ -125,10 +125,10 @@ exports.setDocumentHTML = function(doc, str) {
     var oldScriptElements = [];
     var scriptElements = docElement.getElementsByTagName('script'); 
     for (var index = 0; index < scriptElements.length; index ++) {
-      // Removes the child from the DOM
+      // removes the child from the DOM
       var oldNode = scriptElements[index].parentNode.removeChild(scriptElements[index]);
     
-      // Adds the removed node to an array
+      // adds the removed node to an array
       oldScriptElements.push(oldNode);
     }
 
@@ -136,7 +136,12 @@ exports.setDocumentHTML = function(doc, str) {
 
     // This should re-initialize the Javascript
     for (var index = 0; index < oldScriptElements.length; index ++) {
-      doc.appendChild(oldScriptElements[index]); 
+      // choose either the head or body of the document 
+      // as to prevent DOM Exception 3. 
+      // TODO: what if it doesn't exist?
+
+      var appendContainer = (doc.head  || doc.body);
+      doc.firstChild.appendChild(oldScriptElements[index]); 
     }
   }
 };
