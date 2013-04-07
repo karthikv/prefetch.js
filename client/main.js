@@ -1,5 +1,10 @@
 (function(window, document, undefined) {
-  // TODO: check if filesystem API is supported
+  var requestFileSystem = window.requestFileSystem ||
+    window.webkitRequestFileSystem;
+  if (!requestFileSystem)
+    // file system must be available for prefetcher
+    return;
+
   var linkScraper = require('./link-scraper.js');
   var linkPrefetcher = require('./link-prefetcher.js');
   var resourceScraper = require('./resource-scraper.js');
@@ -23,7 +28,6 @@
     linkToResponseBody[link] = bodyDoc;
 
     resourcePrefetcher.prefetch(filer, resources, function(url, fsURL) {
-      // TODO: rewrite absolute link in rewrite()
       // rewrite URLs dynamically
       resourcePrefetcher.rewrite(link, bodyDoc, url, fsURL);
     });
@@ -42,9 +46,6 @@
         // prefetchable link was clicked; load body directly!
         var docBody = linkToResponseBody[target.href];
         utils.setDocumentHTML(document, docBody.documentElement.innerHTML);
-        
-        // TODO: check if we need to assert link relativity?
-        // if (document.location.origin === target.origin) {
 
         // use history API to change relative URL
         window.history.pushState({}, "", target.pathname);

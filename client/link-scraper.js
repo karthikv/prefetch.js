@@ -6,7 +6,6 @@ exports.findPrefetchableLinks = function() {
   var foundLinks = {};
   var prefetchableLinks = [];
 
-  // TODO: really need to resolve all links completely (e.g. ../../../)
   // loop through all links on the page, aggregating those that can be prefetched
   anchors.forEach(function(anchor) {
     var link = anchor.href;

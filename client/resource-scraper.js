@@ -18,19 +18,24 @@ exports.findPrefetchableResources = function(url, bodyDoc) {
     // loop through all resources on the page, 
     // aggregating those that can be prefetched
     tags.forEach(function(tag) {
-      // TODO: check link validity first
       // for tags with hyperlinks in href
-      var link = uri.absolutizeURI(url, tag.getAttribute('href'));
-      if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
-        prefetchableResources.push(link);
-        foundLinks[link] = true;
+      var link = tag.getAttribute('href');
+      if (link) {
+        link = uri.absolutizeURI(url, link);
+        if (utils.isPrefetchable(link) && !foundLinks[link]) {
+          prefetchableResources.push(link);
+          foundLinks[link] = true;
+        }
       }
 
       // for tags with hyperlinks in src
-      link = uri.absolutizeURI(url, tag.getAttribute('src'));
-      if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
-        prefetchableResources.push(link);
-        foundLinks[link] = true;
+      link = tag.getAttribute('src');
+      if (link) {
+        link = uri.absolutizeURI(url, link);
+        if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
+          prefetchableResources.push(link);
+          foundLinks[link] = true;
+        }
       }
     });
   });
