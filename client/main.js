@@ -39,9 +39,14 @@
       // has link been prefetched?
       if (utils.isPrefetchable(target.href) &&
           target.href in linkToResponseBody) {
+
         // prefetchable link was clicked; load body directly!
         var docBody = linkToResponseBody[target.href];
         utils.setDocumentHTML(document, docBody.documentElement.innerHTML);
+        
+        // History API - potential issue with cross domains (not possible due to security issues)
+        window.history.pushState({}, "", utils.toRelativeLink(target.href));
+
         event.preventDefault();
       }
     }

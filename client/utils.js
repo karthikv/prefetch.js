@@ -121,6 +121,22 @@ exports.setDocumentHTML = function(doc, str) {
   // replace nested HTML tag if necessary
   if (docElement.childElementCount === 1 &&
       firstElement.localName.toLowerCase() === "html") {  
-    doc.replaceChild(firstElement, docElement);  
+
+    var oldScriptElements = [];
+    var scriptElements = docElement.getElementsByTagName('script'); 
+    for (var index = 0; index < scriptElements.length; index ++) {
+      // Removes the child from the DOM
+      var oldNode = scriptElements[index].parentNode.removeChild(scriptElements[index]);
+    
+      // Adds the removed node to an array
+      oldScriptElements.push(oldNode);
+    }
+
+    doc.replaceChild(firstElement, docElement);
+
+    // This should re-initialize the Javascript
+    for (var index = 0; index < oldScriptElements.length; index ++) {
+      doc.appendChild(oldScriptElements[index]); 
+    }
   }
 };
