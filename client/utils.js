@@ -2,6 +2,8 @@
 var ABSOLUTE_LINK_REGEX = /^(http|https):\/\//;
 var RELATIVE_LINK_REGEX = /^(?:\/\/|[^\/]+)*\//;
 
+var origin = location.origin;
+
 /* Removes superfluous whitespace at the beginning and end of the given string.
  * Returns a new, trimmed string.
  *
@@ -62,7 +64,6 @@ exports.makeLinkAbsolute = function(link) {
  */
 
 exports.isPrefetchable = function(link) {
-  var origin = location.origin;
   var url = location.href;
   var relativeURL = url.replace(origin, '');
 
