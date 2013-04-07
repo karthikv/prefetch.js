@@ -10,7 +10,6 @@ var socket = io.connect('http://localhost:1875');
  */
 exports.prefetch = function(links, callback) {
   socket.on('response', function(response) {
-    console.log('response, yo!', response);
     if (!response.url || !response.body)
       return;
 
@@ -19,7 +18,6 @@ exports.prefetch = function(links, callback) {
   });
 
   links.forEach(function(link) {
-    console.log('request', link);
     // emit a request event for every link on the page
     socket.emit('request', link);
   });

@@ -14,8 +14,6 @@
   var linkToResponseBody = {};
   var links = linkScraper.findPrefetchableLinks();
 
-  console.log('got links', links);
-
   // prefetch all links on the page
   linkPrefetcher.prefetch(links, function(link, body) {
     var bodyDoc = utils.parseHTMLFromString(body);
@@ -23,22 +21,23 @@
     // prefetch all resources corresponding to those links
     var resources = resourceScraper.findPrefetchableResources(link, bodyDoc);
     linkToResponseBody[link] = bodyDoc;
-    console.log('resources are', resources);
 
     resourcePrefetcher.prefetch(filer, resources, function(url, fsURL) {
-      console.log('prefetch callback', url, fsURL);
       // TODO: rewrite absolute link in rewrite()
       // rewrite URLs dynamically
       resourcePrefetcher.rewrite(link, bodyDoc, url, fsURL);
     });
   });
 
-  window.addEventListener('click', function(event) {
+  window.addEventListener('click', function prefetchListener(event) {
     var target = event.target;
     if (target.nodeName == 'A') {
       // has link been prefetched?
       if (utils.isPrefetchable(target.href) &&
           target.href in linkToResponseBody) {
+        // remove this event listener, as we're loading a new page
+        window.removeEventListener('click', prefetchListener);
+        console.log('Dynamically reloading...\n');
 
         // prefetchable link was clicked; load body directly!
         var docBody = linkToResponseBody[target.href];

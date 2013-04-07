@@ -118,18 +118,14 @@ exports.setDocumentHTML = function(doc, str) {
   var scripts = exports.toArray(doc.getElementsByTagName('script'));
   var index;
 
-  console.log('scripts are', scripts);
-
   scripts.forEach(function(script) {
     // remove the child from the DOM
     var parentNode = script.parentNode;
     var oldNode = script;
     var newNode = document.createElement('script');
 
-    console.log('before src', oldNode, oldNode.getAttribute('src'), oldNode.src);
     // need new script element for JavaScript to kick in
     if (oldNode.src) {
-      console.log('setting src', oldNode.src);
       newNode.src = oldNode.src;
     } else {
       newNode.innerHTML = oldNode.innerHTML;

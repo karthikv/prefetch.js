@@ -15,7 +15,6 @@ var resourceFs = require('./resource-fs.js');
 exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
   // Are these all the resource tags?
   var types = ['img', 'script', 'link'];
-  console.log('rewrite called w/ resource \n', resourceURL);
 
   types.forEach(function(type) {
     var tags = utils.toArray(bodyDoc.getElementsByTagName(type));
@@ -25,7 +24,6 @@ exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
       if (link) {
         link = uri.absolutizeURI(url, tag.getAttribute('href'));
         if (link == resourceURL) {
-          console.log('replacing href of', link);
           tag.href = fsURL;
         }
       }
@@ -34,7 +32,6 @@ exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
       if (link) {
         link = uri.absolutizeURI(url, tag.getAttribute('src'));
         if (link == resourceURL) {
-          console.log('replacing src of', link);
           tag.src = fsURL;
         }
       }

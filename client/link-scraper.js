@@ -9,12 +9,10 @@ exports.findPrefetchableLinks = function() {
   // TODO: really need to resolve all links completely (e.g. ../../../)
   // loop through all links on the page, aggregating those that can be prefetched
   anchors.forEach(function(anchor) {
-    console.log('href is', anchor.href);
     var link = anchor.href;
 
     // don't prefetch links already found
     if (utils.isPrefetchable(link) && !foundLinks[link]) {
-      console.log('this link:', link, 'is prefetchable');
       prefetchableLinks.push(link);
       foundLinks[link] = true;
     }
