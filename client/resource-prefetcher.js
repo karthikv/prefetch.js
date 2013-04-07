@@ -1,8 +1,9 @@
-function resourcePrefetcher() {
-  var types = ['img', 'script', 'link'];
-  types.forEach(function(type) {
-    
-  });
-}
+var utils = require('./utils'); 
+var scraper = require('./resource-scraper');
 
-exports.resourcePrefetcher = resourcePrefetcher;
+var filer = new Filer();
+filer.init();
+
+exports.prefetchResources = function(localLink) {
+  var resources = scraper.findPrefetchableResources();
+};

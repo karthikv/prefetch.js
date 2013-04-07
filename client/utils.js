@@ -43,3 +43,30 @@ exports.makeLinkAbsolute = function(link) {
 
   return link;
 };
+
+exports.isPrefetchable = function(link) {
+  var origin = location.origin;
+  var url = location.href;
+  var relativeURL = url.replace(origin, '');
+
+  link = utils.trimString(link);
+
+  if (!link || link[0] == '#') {
+    // not a valid link to prefetch
+    return false;
+  }
+  
+  if (utils.isAbsoluteLink(link) && link.indexOf(origin) !== 0) {
+    // absolute link that is not on this origin
+    return false;
+  }
+
+  if (link == relativeURL) {
+    // link goes to this same page
+    return false;
+  }
+
+  return true;
+}
+
+
