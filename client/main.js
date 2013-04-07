@@ -4,7 +4,6 @@
   var linkPrefetcher = require('./link-prefetcher.js');
   var resourceScraper = require('./resource-scraper.js');
   var resourcePrefetcher = require('./resource-prefetcher.js');
-  var resourceReplacer = require('./resource-replacer.js');
   var utils = require('./utils.js');
 
   // mapping from link to response body 
