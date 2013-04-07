@@ -16,14 +16,18 @@ exports.storeResource = function(filer, url, callback) {
 
   xhr.addEventListener('load', function(event) {
     if (this.status == 200) {
+      var fileName = url.replace(/\//g, '%');
+      console.log('file name is', fileName);
+
       // successfully loaded; blob in this.response
-      filer.write('/tmp/' + url, { data: this.response },
+      filer.write(fileName, { data: this.response },
         function(fileEntry, fileWriter) {
+          console.log('in callback, yo.');
           // find the URL corresponding the certain url 
           // and replace it with the fileEntry.
           var fileSource = fileEntry.toURL();
           callback(fileSource); 
-      });
+        }, function(err) { console.log('fail ', err); });
     }
   });
 

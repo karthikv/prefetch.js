@@ -114,6 +114,7 @@ exports.parseHTMLFromString = function(str) {
  */
 exports.setDocumentHTML = function(doc, str) {
   var docElement = doc.documentElement;
+  docElement.innerHTML = '';
   docElement.innerHTML = str;
   var firstElement = docElement.firstElementChild;
 

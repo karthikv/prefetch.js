@@ -1,29 +1,42 @@
 var utils = require('./utils'); 
+var uri = require('./uri');
 var filer = require('./filer.min.js').filer;
 var resourceFs = require('./resource-fs.js');
 
-/* Rewrite the url in the given body with the link to the filesystem cache
- * Passes in the body, url, and response body as
- * arguments, in that order.
+/* Rewrite the given resource url in the provided resource body document with
+ * the link to the filesystem cache.
  *
  * Arguments:
- * body - the html area to rewrite 
- * url - the actual URL
- * fsurl - the cached filesystem URL  
+ * url -- URL of the current page
+ * bodyDoc -- the document of the response body
+ * resourceUrl -- the actual resource URL
+ * fsURL -- the link to the filesystem cache
  */
-exports.rewrite = function(bodyDoc, url, fsurl) {
+exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
   // Are these all the resource tags?
   var types = ['img', 'script', 'link'];
+  console.log('rewrite called w/ resource \n', resourceURL);
 
   types.forEach(function(type) {
-    var elements = utils.toArray(bodyDoc.getElementsByTagName(type));
-    elements.forEach(function(element) {
-      if (element.src == url) {
-        element.src = fsurl;
+    var tags = utils.toArray(bodyDoc.getElementsByTagName(type));
+
+    tags.forEach(function(tag) {
+      var link = tag.getAttribute('href');
+      if (link) {
+        link = uri.absolutizeURI(url, tag.getAttribute('href'));
+        if (link == resourceURL) {
+          console.log('replacing href of', link);
+          tag.href = fsURL;
+        }
       }
   
-      if (element.href == url) {
-        element.href = fsurl;
+      link = tag.getAttribute('src');
+      if (link) {
+        link = uri.absolutizeURI(url, tag.getAttribute('src'));
+        if (link == resourceURL) {
+          console.log('replacing src of', link);
+          tag.src = fsURL;
+        }
       }
     }); 
   });
@@ -34,9 +47,9 @@ exports.rewrite = function(bodyDoc, url, fsurl) {
  * arguments, in that order.
  *
  * Arguments:
- *  filer -- the file system instance
- *  resources -- An array of resources to prefetch. All resources
- *  should be absolute and on the same origin as the current location.
+ * filer -- the file system instance
+ * resources -- An array of resources to prefetch. All resources
+ * should be absolute and on the same origin as the current location.
  */
 exports.prefetch = function(filer, resources, callback) {
   resources.forEach(function(resource) {

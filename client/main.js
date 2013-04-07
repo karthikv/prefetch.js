@@ -19,14 +19,17 @@
   // prefetch all links on the page
   linkPrefetcher.prefetch(links, function(link, body) {
     var bodyDoc = utils.parseHTMLFromString(body);
+
     // prefetch all resources corresponding to those links
-    var resources = resourceScraper.findPrefetchableResources(bodyDoc);
+    var resources = resourceScraper.findPrefetchableResources(link, bodyDoc);
     linkToResponseBody[link] = bodyDoc;
+    console.log('resources are', resources);
 
     resourcePrefetcher.prefetch(filer, resources, function(url, fsURL) {
+      console.log('prefetch callback', url, fsURL);
       // TODO: rewrite absolute link in rewrite()
       // rewrite URLs dynamically
-      resourcePrefetcher.rewrite(bodyDoc, url, fsURL);
+      resourcePrefetcher.rewrite(link, bodyDoc, url, fsURL);
     });
   });
 
