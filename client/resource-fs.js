@@ -12,6 +12,7 @@ filer.init();
  *  once finished
  */
 exports.storeResource = function(url, callback) {
+  // TODO: optimization: check if file already exists in filesystem
   var xhr = new XMLHttpRequest();
   xhr.open('GET', url, true);
   xhr.responseType = 'blob';
