@@ -24,7 +24,7 @@ exports.isAbsoluteLink = function(link) {
 };
 
 exports.toRelativeLink = function(absLink) {
-  return absLink.replace(/^(?:\/\/|[^\/]+)*\//, "");
+  return absLink.replace(RELATIVE_LINK_REGEX, "");
 };
 
 /* Make the given link absolute if it is relative. If it is already absolute,
@@ -73,5 +73,3 @@ exports.isPrefetchable = function(link) {
 
   return true;
 }
-
-
