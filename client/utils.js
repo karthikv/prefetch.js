@@ -76,7 +76,7 @@ exports.isPrefetchable = function(link) {
     return false;
   }
 
-  if (link == relativeURL) {
+  if (link == relativeURL || link == url) {
     // link goes to this same page
     return false;
   }

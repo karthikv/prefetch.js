@@ -14,6 +14,7 @@ exports.findPrefetchableLinks = function() {
 
     // don't prefetch links already found
     if (utils.isPrefetchable(link) && !foundLinks[link]) {
+      console.log('this link:', link, 'is prefetchable');
       prefetchableLinks.push(link);
       foundLinks[link] = true;
     }
