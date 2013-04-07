@@ -5,45 +5,32 @@ var utils = require('./utils');
  * contains the original, unmodified link. absolute contains the converted
  * absolute link. */
 
-exports.findPrefetchableResources = function(body) {
+exports.findPrefetchableResources = function(bodyDoc) {
   var types = ['img', 'script', 'link'];
+  var prefetchableResources = [];
 
   types.forEach(function(type) {
-    var prefetchableLinks = [];
-
-    var parser = new DOMParser()
-      , wrapBody = parser.parseFromString(body, "text/xml");
-      , htmlBody = wrapBody.firstChild;
-
-    var tags = htmlBody.getElementsByTagName(type);
+    var tags = utils.toArray(bodyDoc.getElementsByTagName(type));
     var foundLinks = {};
 
     // loop through all resources on the page, 
     // aggregating those that can be prefetched
     tags.forEach(function(tag) {
       // for tags with hyperlinks in href
-      var absoluteLink = utils.makeLinkAbsolute(tag.href);
-      if (utils.isPrefetchable(tag.href) && !foundLinks[absoluteLink]) {
-        prefetchableLinks.push({
-          original: tag.href,
-          absolute: absoluteLink
-        });
-
-        foundLinks[absoluteLink] = true;
+      var link = tag.href;
+      if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
+        prefetchableResources.push(link);
+        foundLinks[link] = true;
       }
 
       // for tags with hyperlinks in src
-      var absoluteLink = utils.makeLinkAbsolute(tag.src);
-      if (utils.isPrefetchable(tag.src) && !foundLinks[absoluteLink]) {
-        prefetchableLinks.push({
-          original: tag.src,
-          absolute: absoluteLink
-        });
-
-        foundLinks[absoluteLink] = true;
+      link = tag.src;
+      if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
+        prefetchableResources.push(link);
+        foundLinks[link] = true;
       }
     });
-
-    return prefetchableLinks;
   });
+
+  return prefetchableResources;
 };

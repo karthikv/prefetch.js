@@ -11,11 +11,14 @@ io.sockets.on('connection', function(socket) {
    * Arguments:
    * url -- the URL to return the GET response for
    */
-  socket.on('url', function(url) {
+  socket.on('request', function(url) {
+    console.log('in req', url);
+    // TODO: re-enable when not testing
     // ensure URL is in the appropriate form
-    if (!URL_REGEX.test(url)) {
-      return;
-    }
+    // if (!URL_REGEX.test(url)) {
+    //   return;
+    // }
+    console.log('in req past regex', url);
 
     request(url, function(error, response, body) {
       if (!error && response.statusCode == 200) {

@@ -6,28 +6,27 @@
   var resourcePrefetcher = require('./resource-prefetcher.js');
   var utils = require('./utils.js');
 
+  // set up filesystem
+  var filer = new Filer();
+  filer.init(); // TODO: need callback for this?
+
   // mapping from link to response body 
   var linkToResponseBody = {};
   var links = linkScraper.findPrefetchableLinks();
 
-  // absolute link to original link mapping
-  var absoluteToOriginalLink = {};
-  var absoluteLinks = links.map(function(link) {
-    absoluteToOriginalLink[link.absolute] = link.original;
-    return link.absolute;
-  });
+  console.log('got links', links);
 
   // prefetch all links on the page
-  linkPrefetcher.prefetch(absoluteLinks, function(link, body) {
+  linkPrefetcher.prefetch(links, function(link, body) {
+    var bodyDoc = utils.parseHTMLFromString(body);
     // prefetch all resources corresponding to those links
-    var resources = resourceScraper.findPrefetchableResources(body);
-    var originalLink = absoluteToOriginalLink[link];
+    var resources = resourceScraper.findPrefetchableResources(bodyDoc);
 
-    resourcePrefetcher.prefetch(resources, function(fsURL) {
-      // rewrite URLs dynamically
+    resourcePrefetcher.prefetch(filer, resources, function(url, fsURL) {
       // TODO: rewrite absolute link in rewrite()
-      body = resourcePrefetcher.rewrite(body, originalLink, fsURL);
-      linkToResponseBody[originalLink] = body;
+      // rewrite URLs dynamically
+      bodyDoc = resourcePrefetcher.rewrite(bodyDoc, url, fsURL);
+      linkToResponseBody[originalLink] = bodyDoc;
     });
   });
 
@@ -44,4 +43,4 @@
       }
     }
   });
-})(this, this.document);
+})(window, document);

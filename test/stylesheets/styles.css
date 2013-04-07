@@ -1,0 +1,57 @@
+body{color:#444;font:18px/1.5 "Source Sans Pro","PT Sans","Helvetica Neue",Helvetica,Arial,Sans-serif}
+a{color:#c95585;text-decoration:none}
+a:hover{color:#772647}
+h1,h2,h3,h4,h5,h6{color:#333;font-weight:bold;line-height:1;margin-top:0;margin-bottom:5px;letter-spacing:-1px;}
+h1 span,h2 span,h3 span,h4 span,h5 span,h6 span{float:right;color:#999;font-size:70%;font-weight:normal;padding-top:5px}
+h1{font-size:200%}
+h2{font-size:180%}
+h3{font-size:160%}
+h4{font-size:140%}
+h5{font-size:120%}
+h6{font-size:110%}
+p{margin-top:0;margin-bottom:20px}
+blockquote{font-size:17px;border-left:2px solid #ccc;padding-left:20px;margin-left:20px;font-style:italic;overflow:hidden}
+blockquote p:last-child{margin-bottom:0}
+cite{float:right;color:#999}
+header{background:#de7929 url("/images/pencil.jpg") center no-repeat;height:300px;margin-bottom:10px;border-bottom:1px solid #b76521}
+header h1 a,header p{text-indent:-9999px}
+header h1 a{display:block;width:500px;height:210px}
+#logo{background:url("/images/karthikv-header.png") center no-repeat;height:300px;width:500px;margin:0 auto}
+#wrapper{width:550px;margin:0 auto}
+#sidebar{text-align:center}
+nav{margin-top:30px}
+nav ul{text-align:center;padding:0;margin:0 0 0 25px;overflow:hidden}
+nav li{float:left;margin-right:20px}
+#condensed-nav{display:none}
+#condensed-nav menu{display:none}
+#social{text-align:center;margin-top:-80px;margin-left:-20px}
+#social a{padding-top:20px}
+#social img{margin:0 5px;opacity:.5}
+#social img:hover{opacity:1}
+section{position:relative;padding:40px 0 20px}
+section img{border:1px solid #ccc;padding:1px;background-color:#fff;max-width:100%}
+.section-topic-img{position:absolute;top:40px;left:-45px;border:none;padding:0;margin:0;background:transparent;width:32px;height:32px;opacity:.5}
+.visual-item{-webkit-box-sizing:border-box;-moz-box-sizing:border-box;-ms-box-sizing:border-box;-o-box-sizing:border-box;box-sizing:border-box;float:left;width:50%;text-align:center;padding-right:2%;*padding-right:0}
+.visual-item.last{padding-right:0;padding-left:2%;*padding-left:0}
+.visual-item img{display:block;margin-bottom:10px}
+.visual-item span{display:block;font-size:16px;margin-top:10px;margin-bottom:15px;font-style:italic}
+.article{background:url("/images/separator.png") center bottom no-repeat;padding-bottom:80px;margin-bottom:40px}
+.title a{color:#333;text-decoration:none}
+.meta{color:#999;text-transform:uppercase;font-size:14px;margin-bottom:0}
+.meta span{padding:0 3px}
+footer{position:relative;clear:both;font-size:90%;color:#666;border-top:1px dotted #bbb;padding-top:15px}
+footer .section-topic-img{top:12px}
+@media (max-width: 650px){#social{clear:both;overflow:hidden}
+#wrapper,header div,header a{width:auto;max-width:550px}
+#sidebar{max-width:600px}
+#sidebar,#main,footer{margin-left:20px;margin-right:20px}
+nav{display:none}
+#condensed-nav{position:relative;float:left;display:block;margin-top:30px}
+#condensed-nav select{cursor:pointer;font-size:16px;outline:none;background:#eee;-webkit-appearance:none;-moz-appearance:none;padding:9px 30px 7px 15px;border:1px solid #ccc;-webkit-border-radius:5px;-moz-border-radius:5px;-ms-border-radius:5px;-o-border-radius:5px;border-radius:5px}
+#condensed-nav::after{content:" ";width:0;height:0;line-height:0;position:absolute;top:45%;right:10px;border:5px solid transparent;border-top-color:#000}
+section{margin-top:-16px}
+.section-topic-img{top:-15px;left:auto;right:0}
+.visual-item,.visual-item.last{width:100%;padding:0}
+}.cf:before,.cf:after{content:" ";display:table;}
+.cf:after{clear:both}
+.cf{*zoom:1}

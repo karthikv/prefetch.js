@@ -1,9 +1,6 @@
 var utils = require('./utils'); 
-var scraper = require('./resource-scraper');
-var socket = io.connect('http://localhost:1875');
-
-var filer = new Filer();
-filer.init();
+var filer = require('./filer.min.js').filer;
+var resourceFs = require('./resource-fs.js');
 
 /* Rewrite the url in the given body with the link to the filesystem cache
  * Passes in the body, url, and response body as
@@ -14,17 +11,12 @@ filer.init();
  *  url - the actual URL
  *  fsurl - the cached filesystem URL  
  */
-
-exports.rewrite = function(body, url, fsurl) {
+exports.rewrite = function(bodyDoc, url, fsurl) {
   // Are these all the resource tags?
   var types = ['img', 'script', 'link'];
 
-  var parser = new DOMParser()
-    , wrapBody = parser.parseFromString(body, "text/xml");
-    , htmlBody = wrapBody.firstChild;
-
   types.forEach(function(type) {
-    var elements = htmlBody.getElementsByTagName(type);
+    var elements = utils.toArray(bodyDoc.getElementsByTagName(type));
     elements.forEach(function(element) {
       if (element.src == url) {
         element.src = fsurl;
@@ -37,28 +29,19 @@ exports.rewrite = function(body, url, fsurl) {
   });
 };
 
-/* Prefetch all resources in the given array. Calls the provided callback for each
- * link successfully prefetched. Passes in the link and response body as
+/* Prefetch all resources in the given array. Calls the provided callback for
+ * each link successfully prefetched. Passes in the link and response body as
  * arguments, in that order.
  *
  * Arguments:
- * links -- An array of links to prefetch. All links should be absolute and on
- *  the same origin as the current location.
+ *  filer -- the file system instance
+ *  resources -- An array of resources to prefetch. All resources
+ *  should be absolute and on the same origin as the current location.
  */
-
-exports.prefetch = function(links, callback) {
-  var resources = scraper.findPrefetchableResources();
-
-  socket.on('response', function(response) {
-    if (!response.url || !response.body)
-      return;
-
-    // server transmitted response body for a URL; notify
-    callback(response.url, response.body);
-  });
-
-  links.forEach(function(link) {
-    // emit a request event for every link on the page
-    socket.emit('request', link);
+exports.prefetch = function(filer, resources, callback) {
+  resources.forEach(function(resource) {
+    resourceFs.storeResource(filer, resource, function(fsURL) {
+      callback(resource, fsURL);
+    });
   });
 };
