@@ -1,5 +1,5 @@
-var utils = require('./utils');
-var uri = require('./uri');
+var utils = require('../helpers/utils');
+var uri = require('../helpers/uri');
 
 /* Returns an array of all prefetchable resources on the current page.
  *
@@ -8,33 +8,39 @@ var uri = require('./uri');
  * bodyDoc -- the document element of the response body
  */
 exports.findPrefetchableResources = function(url, bodyDoc) {
-  var types = ['img', 'script', 'link'];
+  // tags corresponding to resources
+  var resourceTags = ['img', 'script', 'link'];
   var prefetchableResources = [];
-  var foundLinks = {};
 
-  types.forEach(function(type) {
-    var tags = utils.toArray(bodyDoc.getElementsByTagName(type));
+  // keep track of which resources have already been processed
+  var foundResources = {};
 
-    // loop through all resources on the page, 
-    // aggregating those that can be prefetched
+  resourceTags.forEach(function(resourceTag) {
+    var tags = utils.toArray(bodyDoc.getElementsByTagName(resourceTag));
+
+    // process resources, aggregating those that are prefetchable
     tags.forEach(function(tag) {
-      // for tags with hyperlinks in href
+      // for tags with hyperlinks in href attribute
       var link = tag.getAttribute('href');
       if (link) {
+        // make URL absolute to ensure consistency
         link = uri.absolutizeURI(url, link);
+
         if (utils.isPrefetchable(link) && !foundLinks[link]) {
           prefetchableResources.push(link);
-          foundLinks[link] = true;
+          foundResources[link] = true;
         }
       }
 
-      // for tags with hyperlinks in src
+      // for tags with hyperlinks in src attribute
       link = tag.getAttribute('src');
       if (link) {
+        // make URL absolute to ensure consistency
         link = uri.absolutizeURI(url, link);
+
         if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
           prefetchableResources.push(link);
-          foundLinks[link] = true;
+          foundResource[link] = true;
         }
       }
     });

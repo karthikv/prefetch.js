@@ -1,15 +1,17 @@
 (function(window, document, undefined) {
   var requestFileSystem = window.requestFileSystem ||
     window.webkitRequestFileSystem;
-  if (!requestFileSystem)
+
+  if (!requestFileSystem) {
     // file system must be available for prefetcher
     return;
+  }
 
-  var linkScraper = require('./link-scraper.js');
-  var linkPrefetcher = require('./link-prefetcher.js');
-  var resourceScraper = require('./resource-scraper.js');
-  var resourcePrefetcher = require('./resource-prefetcher.js');
-  var utils = require('./utils.js');
+  var linkScraper = require('./scrapers/link.js');
+  var linkPrefetcher = require('./prefetchers/link.js');
+  var resourceScraper = require('./scrapers/resource.js');
+  var resourcePrefetcher = require('./prefetchers/resource.js');
+  var utils = require('./helpers/utils.js');
 
   // set up filesystem
   var filer = new Filer();

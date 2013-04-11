@@ -1,8 +1,9 @@
-var utils = require('./utils');
+var utils = require('../helpers/utils');
 
 /* Returns an array of all prefetchable links on the current page. */
 exports.findPrefetchableLinks = function() {
   var anchors = utils.toArray(document.getElementsByTagName('a'));
+  // to keep track of links already processed
   var foundLinks = {};
   var prefetchableLinks = [];
 

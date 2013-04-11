@@ -1,6 +1,6 @@
-var utils = require('./utils'); 
-var uri = require('./uri');
-var resourceFs = require('./resource-fs.js');
+var utils = require('../helpers/utils'); 
+var uri = require('../helpers/uri');
+var resourceFs = require('../helpers/resource-fs.js');
 
 /* Rewrite the given resource url in the provided resource body document with
  * the link to the filesystem cache.
@@ -12,16 +12,19 @@ var resourceFs = require('./resource-fs.js');
  * fsURL -- the link to the filesystem cache
  */
 exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
-  // Are these all the resource tags?
-  var types = ['img', 'script', 'link'];
+  // tags corresponding to resources
+  var resourceTags = ['img', 'script', 'link'];
 
-  types.forEach(function(type) {
-    var tags = utils.toArray(bodyDoc.getElementsByTagName(type));
+  resourceTags.forEach(function(resourceTag) {
+    var tags = utils.toArray(bodyDoc.getElementsByTagName(resourceTag));
 
     tags.forEach(function(tag) {
+      // tag has an href or src attribute which corresponds to the resource
       var link = tag.getAttribute('href');
       if (link) {
+        // make URL absolute to ensure consistent comparison
         link = uri.absolutizeURI(url, tag.getAttribute('href'));
+
         if (link == resourceURL) {
           tag.href = fsURL;
         }
@@ -29,7 +32,9 @@ exports.rewrite = function(url, bodyDoc, resourceURL, fsURL) {
   
       link = tag.getAttribute('src');
       if (link) {
+        // make URL absolute to ensure consistent comparison
         link = uri.absolutizeURI(url, tag.getAttribute('src'));
+
         if (link == resourceURL) {
           tag.src = fsURL;
         }
