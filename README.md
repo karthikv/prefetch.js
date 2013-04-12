@@ -50,3 +50,19 @@ following steps:
    opening the console, you'll notice the message 'Dynamically reloading...' on
    each prefetch. This message should persist even across pages due to the
    dynamic DOM replacement and History API.
+
+## Contributors
+### Karthik Viswanathan
+- GitHub: [@karthikv](https://github.com/karthikv)
+- Twitter: [@karthikvnet](https://twitter.com/karthikvnet)
+- Website: [http://karthikv.net](http://karthikv.net)
+- Email: me@karthikv.net
+
+### Vivek Nair
+- GitHub: [@viveknair](https://github.com/viveknair)
+- LinkedIn: [Vivek Nair](http://www.linkedin.com/pub/vivek-nair/35/123/25b)
+- Website: [http://www.wdvivek.com/](http://www.wdvivek.com/)
+- Email: vivek@wdvivek.com
+
+## Questions?
+If you have any questions, comments, concerns, or suggestions, please feel free to create a new issue on [GitHub](https://github.com/karthikv/prefetch.js/issues) or contact Karthik/Vivek directly (see contributors section above).
