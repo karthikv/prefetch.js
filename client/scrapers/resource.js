@@ -26,7 +26,7 @@ exports.findPrefetchableResources = function(url, bodyDoc) {
         // make URL absolute to ensure consistency
         link = uri.absolutizeURI(url, link);
 
-        if (utils.isPrefetchable(link) && !foundLinks[link]) {
+        if (utils.isPrefetchable(link) && !foundResources[link]) {
           prefetchableResources.push(link);
           foundResources[link] = true;
         }
@@ -38,9 +38,9 @@ exports.findPrefetchableResources = function(url, bodyDoc) {
         // make URL absolute to ensure consistency
         link = uri.absolutizeURI(url, link);
 
-        if (link && utils.isPrefetchable(link) && !foundLinks[link]) {
+        if (link && utils.isPrefetchable(link) && !foundResources[link]) {
           prefetchableResources.push(link);
-          foundResource[link] = true;
+          foundResources[link] = true;
         }
       }
     });

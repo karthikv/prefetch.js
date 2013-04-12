@@ -1,6 +1,6 @@
 dev:
 	browserify main.js > tmp.js
-	cat socket.io.js filer.js tmp.js > prefetch.js
+	cat libraries/sockjs.min.js libraries/filer.js tmp.js > prefetch.js
 	rm tmp.js
 
 prod:

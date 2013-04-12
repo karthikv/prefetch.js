@@ -1,4 +1,4 @@
-var socket = io.connect('http://localhost:1875');
+var socket = new SockJS('http://localhost:1875');
 
 /* Prefetch all links in the given array. Calls the provided callback for each
  * link successfully prefetched. Passes in the link and response body as
@@ -9,8 +9,9 @@ var socket = io.connect('http://localhost:1875');
  *  the same origin as the current location.
  */
 exports.prefetch = function(links, callback) {
-  socket.on('response', function(response) {
-    if (!response.url || !response.body)
+  socket.addEventListener('message', function(event) {
+    var response = JSON.parse(event.data);
+    if (!response || !response.url || !response.body)
       return;
 
     // server transmitted response body for a URL; notify
@@ -18,7 +19,9 @@ exports.prefetch = function(links, callback) {
   });
 
   links.forEach(function(link) {
-    // emit a request event for every link on the page
-    socket.emit('request', link);
+    socket.addEventListener('open', function() {
+      // send each link the server needs to request
+      socket.send(link);
+    });
   });
 };
