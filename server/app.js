@@ -6,12 +6,14 @@ var request = require('request');
 var URL_REGEX = /(http|ftp|https):\/\/[\w\-_]+(\.?[\w\-_]+)+([\w\-\.,@?\^=%&amp;:\/~\+#]*[\w\-\@?\^=%&amp;\/~\+#])?/;
 
 sockets.on('connection', function(connection) {
-  /* Client emits a request event when it wants to request the given URL. This
-   * functions retrieves the response via a simple GET request.
+  /* Makes GET requests for URLs the client sends. Retrieves responses and
+   * sends them back to the client. Each response is an object (in JSON form)
+   * with two properties: url, the original URL sent, and data, the resultant
+   * response data.
    *
    * Arguments:
-   * url -- the URL to return the GET response for
-   */
+   * url -- the URL to send back the GET response for
+   */ 
   connection.on('data', function(url) {
     // ensure URL is in the appropriate form
     if (!URL_REGEX.test(url)) {
@@ -20,7 +22,7 @@ sockets.on('connection', function(connection) {
 
     request(url, function(error, response, body) {
       if (!error && response.statusCode == 200) {
-        // valid response; emit it back to client
+        // valid response; send it back to client
         connection.write(JSON.stringify({ url: url, body: body }));
       }
     });
