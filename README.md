@@ -61,7 +61,7 @@ following steps:
 ### Vivek Nair
 - GitHub: [@viveknair](https://github.com/viveknair)
 - LinkedIn: [Vivek Nair](http://www.linkedin.com/pub/vivek-nair/35/123/25b)
-- Website: [http://www.wdvivek.com/](http://www.wdvivek.com/)
+- Website: [http://viveksnair.com](http://viveksnair.com)
 - Email: vivek@wdvivek.com
 
 ## Questions?
